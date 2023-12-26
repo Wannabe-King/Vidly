@@ -2,6 +2,7 @@ const express=require("express")
 const router=express.Router()
 const {Movie,validateMovie}=require("../models/movie.js")
 const {Genre}=require('../models/genre.js')
+const authorizedUser=require('../middleware/auth')
 
 //Movie endpoints
 router.get('/',async (req,res)=>{
@@ -27,7 +28,7 @@ router.get('/:id',async (req,res)=>{
     }
 })
 
-router.post('/',async (req,res)=>{
+router.post('/',authorizedUser,async (req,res)=>{
     const {error}=validateMovie(req.body);
     if(error){
         return res.status(400).send(error.details[0].message);
@@ -57,7 +58,7 @@ router.post('/',async (req,res)=>{
     res.send(movie);
 })
 
-router.put('/:id',async (req,res)=>{
+router.put('/:id',authorizedUser,async (req,res)=>{
     const {error}=validateMovie(req.body);
     if(error){
         res.status(400).send(error.details[0].message);
@@ -90,7 +91,7 @@ router.put('/:id',async (req,res)=>{
 })
 
 
-router.delete('/:id',async (req,res)=>{
+router.delete('/:id',authorizedUser,async (req,res)=>{
     try{
         const movie=await Movie.findByIdAndDelete(req.params.id)
         res.send(movie);

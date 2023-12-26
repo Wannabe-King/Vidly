@@ -1,11 +1,19 @@
 const mongoose=require("mongoose")
 const Joi=require('joi');
+const jwt=require('jsonwebtoken')
+const config=require('config')
 
 const userSchema=new mongoose.Schema({
     name:{type: String, required: true},
     email:{type:String,required:true,unique:true},
     password: {type:String,minlength:6,required:true}
 })
+
+//Adding a method for Genreating Auth token for login of user
+userSchema.methods.generateAuthToken= function(){
+    const token=jwt.sign({_id:this._id},config.get("jwtPrivateKey"));
+    return token;
+}
 
 //Customer Definition
 const User=mongoose.model("User",userSchema);

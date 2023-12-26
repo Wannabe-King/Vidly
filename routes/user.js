@@ -3,8 +3,6 @@ const _=require('lodash')
 const bcrypt=require('bcryptjs')
 const router=express.Router()
 const {User,validateUser}=require("../models/user")
-const jwt=require('jsonwebtoken')
-const config=require('config')
 
 //Register User endpoints
 
@@ -32,11 +30,10 @@ router.post('/',async (req,res)=>{
     // res.send(user);
     //We don't want anybody to see the password so 
 
-    const token=jwt.sign({_id:user._id},config.get("jwtPrivateKey"));
+    const token=user.generateAuthToken();
 
-    res.header('x-auth-token').send(_.pick(user,["_id","name","email"]))
+    res.header('x-auth-token',token).send(_.pick(user,["_id","name","email"]))
 })
-
 
 
 
