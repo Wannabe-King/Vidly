@@ -6,12 +6,13 @@ const config=require('config')
 const userSchema=new mongoose.Schema({
     name:{type: String, required: true},
     email:{type:String,required:true,unique:true},
-    password: {type:String,minlength:6,required:true}
+    password: {type:String,minlength:6,required:true},
+    isAdmin:Boolean
 })
 
 //Adding a method for Genreating Auth token for login of user
 userSchema.methods.generateAuthToken= function(){
-    const token=jwt.sign({_id:this._id},config.get("jwtPrivateKey"));
+    const token=jwt.sign({_id:this._id,isAdmin:this.isAdmin},config.get("jwtPrivateKey"));
     return token;
 }
 

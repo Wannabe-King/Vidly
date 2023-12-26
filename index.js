@@ -4,7 +4,7 @@ const genres=require("./routes/genre")
 const customers=require("./routes/customer")
 const movies=require("./routes/movie")
 const rentals=require("./routes/rental")
-const registerUser=require('./routes/user')
+const user=require('./routes/user')
 const auth=require('./routes/auth')
 const mongoose=require("mongoose")
 const config=require('config')
@@ -27,7 +27,7 @@ app.use("/api/genres",genres);
 app.use("/api/customers",customers);
 app.use("/api/movies",movies);
 app.use("/api/rentals",rentals);
-app.use("/api/register",registerUser);
+app.use("/api/register",user);
 app.use('/api/auth',auth);
 
 const port=process.env.PORT || 3000

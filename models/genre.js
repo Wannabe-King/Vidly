@@ -11,8 +11,8 @@ const Genre=mongoose.model("Genre",genreSchema);
 
 //Genre validation
 function validateGenre(name){
-    const schema={name:Joi.string().required()};
-    return Joi.validate(name,schema);
+    const schema=Joi.object({name:Joi.string().required()});
+    return schema.validate(name);
 }
 
 exports.genreSchema=genreSchema;
