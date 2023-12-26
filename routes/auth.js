@@ -1,3 +1,5 @@
+const jwt=require('jsonwebtoken')
+const config=require('config')
 const express=require("express")
 const _=require('lodash')
 const bcrypt=require('bcryptjs')
@@ -6,7 +8,6 @@ const {User}=require("../models/user")
 const Joi=require('joi')
 
 //Register User endpoints
-
 router.post('/',async (req,res)=>{
     const {error}=validate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -17,8 +18,8 @@ router.post('/',async (req,res)=>{
     const login=await bcrypt.compare(req.body.password,user.password);
     if(!login) return res.status(400).send('Invalid Email or Password')
     
-
-    res.send('Login Successfully')
+    const token=jwt.sign({_id:user._id},config.get("jwtPrivateKey"));
+    res.send(token)
 })
 
 function validate(req){

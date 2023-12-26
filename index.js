@@ -7,6 +7,12 @@ const rentals=require("./routes/rental")
 const registerUser=require('./routes/user')
 const auth=require('./routes/auth')
 const mongoose=require("mongoose")
+const config=require('config')
+
+if(!config.get('jwtPrivateKey')) {
+    console.log('FATAL ERROR : jwtPrivateKey is not defined') 
+    process.exit(1);
+}
 
 async function createConnection(){
     await mongoose.connect("mongodb://localhost:27017/vidly")
