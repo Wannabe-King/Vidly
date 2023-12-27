@@ -1,3 +1,5 @@
+require('express-async-errors')
+const winston=require('winston')
 const express=require("express");
 const app=express();
 const genres=require("./routes/genre")
@@ -8,6 +10,7 @@ const user=require('./routes/user')
 const auth=require('./routes/auth')
 const mongoose=require("mongoose")
 const config=require('config')
+const error=require('./middleware/error')
 
 if(!config.get('jwtPrivateKey')) {
     console.log('FATAL ERROR : jwtPrivateKey is not defined') 
@@ -29,6 +32,10 @@ app.use("/api/movies",movies);
 app.use("/api/rentals",rentals);
 app.use("/api/register",user);
 app.use('/api/auth',auth);
+
+//middleware to handle exceptions
+
+app.use(error)
 
 const port=process.env.PORT || 3000
 app.listen(port,()=>{console.log(`listening to ${port}`)})
