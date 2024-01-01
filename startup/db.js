@@ -1,7 +1,9 @@
 const mongoose=require("mongoose")
+const config=require('config')
 
 module.exports = async function (){
-    await mongoose.connect("mongodb://localhost:27017/vidly")
-    .then(console.log("Connected to DB successfully."))
-    .catch(err=>console.error("Could not connect to DB",err))
+    const db=config.get('db')
+    await mongoose.connect(db)
+    .then(console.log(`Connected to ${db} successfully.`))
+    .catch(err=>console.error("Could not connect to ",err))
 }
